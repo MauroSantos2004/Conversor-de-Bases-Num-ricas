@@ -1,129 +1,114 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
+import tkinter
+from tkinter import *
+from tkinter import ttk
 
-# C extensions
-*.so
+# Cores
+co0 = "#444466"  # Preta
+co1 = "#feffff"  # branca / white
+co2 = "#6f9fbd"  # azul
+co3 = "#38576b"  # valor
+co4 = "#403d3d"  # letra
+co5= '#e89613'    # laranja
 
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-pip-wheel-metadata/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+# Parte da dimensões da tela
+tela = Tk()
+tela.title('')
+tela.geometry('400x310')
+tela.configure(bg=co3)
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+estilo = ttk.Style()
+estilo.theme_use('clam')
+ttk.Separator(tela,orient = HORIZONTAL).grid(row = 0,columnspan = 1, ipadx = 190)
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+# Dividindo a janela em dois quadros
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
+f_cima = Frame(tela,width=400, height=60, bg = co1, pady = 0, padx=0)
+f_cima.grid(row = 1, column = 0)
 
-# Translations
-*.mo
-*.pot
+f_baixo = Frame(tela,width=400, height=300, bg = co0, pady = 12, padx=20)
+f_baixo.grid(row = 2, column = 0, sticky=NW)
 
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
+# Configurando f_cima
 
-# Flask stuff:
-instance/
-.webassets-cache
+app_nome = Label(f_cima, text='Conversor de Base Númerica', relief=FLAT, anchor = 'center', font=('System 20'),
+bg = co2, fg = co1)
 
-# Scrapy stuff:
-.scrapy
+app_nome.place(x = 7, y = 15)
 
-# Sphinx documentation
-docs/_build/
+# Função para converter as bases
+def converter():
+    def entrada_para_decimal(numero,base):
 
-# PyBuilder
-target/
+        # Número decimal correspondente
+        decimal = int(numero, base)
 
-# Jupyter Notebook
-.ipynb_checkpoints
+        binario = bin(decimal)
+        octal = oct(decimal)
+        hexadecimal = hex(decimal)
 
-# IPython
-profile_default/
-ipython_config.py
 
-# pyenv
-.python-version
+        caixa_binario['text'] = str(binario[2:])
+        caixa_octal['text'] = str(octal[2:])
+        caixa_decimal['text'] = str(decimal)
+        caixa_hexa['text'] = str(hexadecimal[2:].upper())
 
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
+    numero =  valor_conversao.get()
+    base = combo.get()
+    
+    # Definindo o valor da base
+    if base == 'BINARIO':
+        base = 2
+    elif base == 'OCTAL':
+        base == 8
+    elif base == 'DECIMAL':
+        base = 10
+    else:
+        base = 16
+    # Chamando a função
+    entrada_para_decimal(numero,base)
+    
 
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow
-__pypackages__/
 
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
+# COnfigurando f_baixo
 
-# SageMath parsed files
-*.sage.py
+bases = ['BINARIO','OCTAL', 'DECIMAL', 'HEXADECIMAL']
 
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
+combo = ttk.Combobox(f_baixo, width=12, justify=CENTER,font=('Ivy 12 bold'))
+combo['values'] = (bases)
+combo.place(x= 20, y = 10)
+# x = 35 y = 10
 
-# Spyder project settings
-.spyderproject
-.spyproject
+# Parte feita para área de conversão
+valor_conversao = Entry(f_baixo, width=9, justify='center',font=('',13), highlightthickness=1,relief = 'solid')
+valor_conversao.place(x = 175, y = 9)
+# x = 190
 
-# Rope project settings
-.ropeproject
+# Botão de conversão do número
+botao_conversao = Button(f_baixo, command = converter, text='CONVERTER', relief=RAISED,overrelief=RIDGE, font=('Ivy 8'),bg = co5, fg = co1)
+botao_conversao.place(x = 285, y = 9)
 
-# mkdocs documentation
-/site
+# Mostrar a caixa de texto com o do que foi convertido(BINARIO)
+caixa_binario = Label(f_baixo, text='BINARIO',width=12, relief=FLAT, anchor = 'nw', font=('Verdana 12'),bg = co4, fg = co1)
+caixa_binario.place(x = 35, y = 60)
+caixa_binario = Label(f_baixo, text='',width=13, relief=FLAT, anchor = 'center', font=('Verdana 12'), fg = co3)
+caixa_binario.place(x = 158, y = 60)
 
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
+# Mostrar a caixa de texto com o do que foi convertido(Octal)
+caixa_octal = Label(f_baixo, text='OCTAL',width=12, relief=FLAT, anchor = 'nw', font=('Verdana 12'),bg = co4, fg = co1)
+caixa_octal.place(x = 35, y = 100)
+caixa_octal = Label(f_baixo, text='',width=13, relief=FLAT, anchor = 'center', font=('Verdana 12'), fg = co3)
+caixa_octal.place(x = 158, y = 100)
 
-# Pyre type checker
-.pyre/
+# Mostrar a caixa de texto com o do que foi convertido(DECIMAL)
+caixa_decimal = Label(f_baixo, text='DECIMAL',width=12, relief=FLAT, anchor = 'nw', font=('Verdana 12'),bg = co4, fg = co1)
+caixa_decimal.place(x = 35, y = 140)
+caixa_decimal = Label(f_baixo, text='',width=13, relief=FLAT, anchor = 'center', font=('Verdana 12'), fg = co3)
+caixa_decimal.place(x = 158, y = 140)
+
+# Mostrar a caixa de texto com o do que foi convertido(HEXADECIMAL)
+caixa_hexa= Label(f_baixo, text='HEXADECIMAL',width=12, relief=FLAT, anchor = 'nw', font=('Verdana 12'),bg = co4, fg = co1)
+caixa_hexa.place(x = 35, y = 180)
+caixa_hexa = Label(f_baixo, text='',width=13, relief=FLAT, anchor = 'center', font=('Verdana 12'), fg = co3)
+caixa_hexa.place(x = 158, y = 180)
+
+tela.mainloop()
